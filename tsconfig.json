@@ -1,0 +1,13 @@
+{
+  "extends": "@tsconfig/node18-strictest/tsconfig.json",
+  "ts-node": {
+    "files": true
+  },
+  "files": ["src/main.ts", "src/env.d.ts"],
+  "compilerOptions": {
+    "outDir": "bin",
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*", "__generated__"],
+  "exclude": ["node_modules", "src/generate-types.ts", "src/__generated__"]
+}
