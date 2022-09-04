@@ -1,6 +1,6 @@
 {
   "name": "kobalt",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A cli to generate a theme from figma projects.",
   "main": "bin/main.js",
   "scripts": {
@@ -8,8 +8,7 @@
     "start": "ts-node src/main.ts",
     "generate:types": "ts-node src/generate-types.ts",
     "generate:tokens": "ts-node src/modules/generate-tokens.ts",
-    "prestart": "generate:types",
-    "postinstall": "generate:types"
+    "prestart": "generate:types"
   },
   "preferGlobal": true,
   "bin": {
