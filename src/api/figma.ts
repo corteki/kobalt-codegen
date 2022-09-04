@@ -12,8 +12,10 @@ const instance = axios.create({
 });
 
 export const figma = {
-  getProject: async <T = {}>(id: string) => {
-    const { data } = await instance.get<T>(`/${id}`);
+  getProject: async <T = {}>() => {
+    const { data } = await instance.get<T>(
+      `/${process.env["FIGMA_PROJECT_ID"]}`
+    );
     return data;
   },
 };

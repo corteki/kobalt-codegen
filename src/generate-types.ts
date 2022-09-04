@@ -12,7 +12,7 @@ import {
  * generates types from figma schema
  */
 const generateTypes = async () => {
-  const project = await figma.getProject("KRCvkVdBRgnrT5gRoF3ZnH");
+  const project = await figma.getProject();
   if (!fs.existsSync("./src/__generated__")) {
     fs.mkdirSync("./src/__generated__");
   }

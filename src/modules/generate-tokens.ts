@@ -20,9 +20,7 @@ const getFrame = (frames: PurpleChild[]) => (name: Frames) =>
   frames.find((frame) => frame.name === name);
 
 export const generateTokens = async () => {
-  const project = await figma.getProject<Project>(
-    process.env["FIGMA_PROJECT_ID"]
-  );
+  const project = await figma.getProject<Project>();
   const styles = getStyles(project.document.children);
   if (!styles) {
     throw new Error("Invalid page name: styles is missing as page in figma");
