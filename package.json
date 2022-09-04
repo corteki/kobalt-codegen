@@ -1,6 +1,6 @@
 {
   "name": "kobalt",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A cli to generate a theme from figma projects.",
   "main": "bin/main.js",
   "scripts": {
@@ -36,9 +36,7 @@
     "styled-components"
   ],
   "dependencies": {
-    "axios": "^0.27.2"
-  },
-  "peerDependencies": {
+    "axios": "^0.27.2",
     "@types/react": "^18.0.18",
     "@types/styled-components": "^5.1.26",
     "react": "^18.2.0",
