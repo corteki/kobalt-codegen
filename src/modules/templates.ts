@@ -1,3 +1,5 @@
+import { indent } from "../utilities/format";
+
 export class Theme {
   variables = [];
 
@@ -6,7 +8,7 @@ export class Theme {
   }
 
   build() {
-    return `
+    return indent(`
       const theme = {
         ${this.variables.join(",")}
       }
@@ -21,7 +23,7 @@ export class Theme {
 
       
       export type Theme = typeof theme;
-    `;
+    `);
   }
 }
 
@@ -32,17 +34,17 @@ export const createVariable = (name: string, value: string) =>
   `export const ${name} = ${value}`;
 
 export const createTemplate = (body: string, theme: string) =>
-  `import type { ReactNode } from "react";
+  indent(`import type { ReactNode } from "react";
   import styled, { ThemeProvider } from "styled-components";
   ${body}
-  ${theme}`;
+  ${theme}`);
 
-export const createThemeDeclaration = () => `
+export const createThemeDeclaration = () =>
+  indent(`
 import type { Theme } from "./${process.env["OUTPUT_FILE"]}";
 import "styled-components";
 
 declare module "styled-components" {
   interface DefaultTheme extends Theme {}
 }
-
-`;
+`);

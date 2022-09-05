@@ -1,7 +1,7 @@
 import type { Formatter } from "style-dictionary";
 import type { DesignToken } from "style-dictionary/types/DesignToken";
 import { capitalize } from "../utilities/capitalize";
-import { kebabCase } from "../utilities/kebabCase";
+import { kebabCase } from "../utilities/format";
 import {
   createStyledComponentFont,
   createVariable,
