@@ -21,7 +21,9 @@ export const generateTokens = async () => {
   const project = await figma.getProject<Project>();
   const styles = getStyles(project.document.children);
   if (!styles) {
-    throw new Error("Invalid page name: styles is missing as page in figma");
+    throw new Error(
+      `Invalid page name: ${process.env["FIGMA_STYLE_PAGE"]} is missing as page in figma`
+    );
   }
 
   const frame = getFrame(styles.children);
