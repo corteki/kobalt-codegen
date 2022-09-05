@@ -1,6 +1,6 @@
 {
   "name": "kobalt",
-  "version": "1.1.0-alpha.2",
+  "version": "1.1.0-alpha.3",
   "description": "A cli to generate a theme from figma projects.",
   "main": "bin/main.js",
   "scripts": {
@@ -22,6 +22,10 @@
   ],
   "author": "Tim Alaerts",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/corteki/kobalt"
+  },
   "devDependencies": {
     "@tsconfig/node18-strictest": "^1.0.0",
     "@types/node": "^18.7.13",

@@ -12,11 +12,9 @@ import { createStyledComponentsFormat } from "./formats";
 import { flatten } from "../utilities/flatten";
 import { createThemeDeclaration } from "./templates";
 
-type Frames = "fonts" | "colors" | "spacings";
-
 const getStyles = (pages: DocumentChild[]) =>
-  pages.find((page) => page.name === "styles");
-const getFrame = (frames: PurpleChild[]) => (name: Frames) =>
+  pages.find((page) => page.name === process.env["FIGMA_STYLE_PAGE"]);
+const getFrame = (frames: PurpleChild[]) => (name: string) =>
   frames.find((frame) => frame.name === name);
 
 export const generateTokens = async () => {
@@ -27,19 +25,21 @@ export const generateTokens = async () => {
   }
 
   const frame = getFrame(styles.children);
-  const palette = frame("colors");
+  const palette = frame(process.env["FIGMA_COLOR_FRAME"]);
 
   if (!palette) {
     throw new Error(
-      "Invalid frame name: palette is missing as a frame in figma"
+      `Invalid frame name: ${process.env["FIGMA_COLOR_FRAME"]} is missing as a frame in figma`
     );
   }
 
   const color = createColorToken(palette);
-  const fonts = frame("fonts");
+  const fonts = frame(process.env["FIGMA_FONT_FRAME"]);
 
   if (!fonts) {
-    throw new Error("Invalid frame name: fonts is missing as a frame in figma");
+    throw new Error(
+      `Invalid frame name: ${process.env["FIGMA_FONT_FRAME"]} is missing as a frame in figma`
+    );
   }
 
   const font = createFontToken(fonts);
