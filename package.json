@@ -1,6 +1,6 @@
 {
   "name": "kobalt",
-  "version": "1.1.0-alpha.15",
+  "version": "1.1.0-alpha.16",
   "description": "A cli to generate a theme from figma projects.",
   "main": "bin/main.js",
   "scripts": {
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@tsconfig/node18-strictest": "^1.0.0",
     "@types/node": "^18.7.13",
+    "@types/prettier": "^2.7.0",
     "quicktype": "^15.0.261",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.2"
@@ -38,10 +39,11 @@
     "styled-components"
   ],
   "dependencies": {
-    "axios": "^0.27.2",
     "@types/react": "^18.0.18",
     "@types/styled-components": "^5.1.26",
+    "axios": "^0.27.2",
     "dotenv": "^16.0.1",
+    "prettier": "^2.7.1",
     "style-dictionary": "^3.7.1"
   }
 }
