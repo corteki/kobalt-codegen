@@ -45,7 +45,10 @@ export const generateTokens = async () => {
   }
 
   const font = createFontToken(fonts);
-  const tokens = { color, font: resolveColorReferences(flatten(color), font) };
+  const tokens = {
+    color,
+    font: resolveColorReferences(flatten(color), font),
+  };
 
   const outputFolder = `${process.cwd()}/${process.env["OUTPUT_FOLDER"]}`;
   if (!fs.existsSync(outputFolder)) {
