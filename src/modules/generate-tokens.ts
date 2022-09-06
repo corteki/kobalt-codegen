@@ -50,6 +50,11 @@ export const generateTokens = async () => {
     font: resolveColorReferences(flatten(color), font),
   };
 
+  const theme = {
+    color,
+    font,
+  };
+
   const outputFolder = `${process.cwd()}/${process.env["OUTPUT_FOLDER"]}`;
   if (!fs.existsSync(outputFolder)) {
     fs.mkdirSync(outputFolder);
@@ -59,7 +64,7 @@ export const generateTokens = async () => {
   fs.writeFileSync(tokenFile, JSON.stringify(tokens, null, 2));
 
   const themeFile = `${outputFolder}/theme.ts`;
-  fs.writeFileSync(themeFile, createTheme(JSON.stringify(tokens, null, 2)));
+  fs.writeFileSync(themeFile, createTheme(JSON.stringify(theme, null, 2)));
   const themeDeclarationFile = `${process.cwd()}/theme.d.ts`;
   fs.writeFileSync(themeDeclarationFile, createThemeDeclaration());
 
