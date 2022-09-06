@@ -4,6 +4,7 @@ export interface ProjectEnv {
   FIGMA_STYLE_PAGE: string;
   FIGMA_COLOR_FRAME: string;
   FIGMA_FONT_FRAME: string;
+  FIGMA_SPACING_FRAME: string;
   OUTPUT_FOLDER: string;
   OUTPUT_FILE: string;
 }

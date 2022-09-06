@@ -17,6 +17,7 @@ try {
     "FIGMA_STYLE_PAGE",
     "FIGMA_COLOR_FRAME",
     "FIGMA_FONT_FRAME",
+    "FIGMA_SPACING_FRAME",
     "OUTPUT_FOLDER",
     "OUTPUT_FILE",
   ]);

@@ -11,6 +11,7 @@ import { createFontToken, resolveColorReferences } from "./fonts";
 import { createStyledComponentsFormat } from "./formats";
 import { flatten } from "../utilities/flatten";
 import { createTheme, createThemeDeclaration } from "./templates";
+import { createSpacingToken } from "./spacing";
 
 const getStyles = (pages: DocumentChild[]) =>
   pages.find((page) => page.name === process.env["FIGMA_STYLE_PAGE"]);
@@ -27,32 +28,44 @@ export const generateTokens = async () => {
   }
 
   const frame = getFrame(styles.children);
-  const palette = frame(process.env["FIGMA_COLOR_FRAME"]);
+  const colorFrame = frame(process.env["FIGMA_COLOR_FRAME"]);
 
-  if (!palette) {
+  if (!colorFrame) {
     throw new Error(
       `Invalid frame name: ${process.env["FIGMA_COLOR_FRAME"]} is missing as a frame in figma`
     );
   }
 
-  const color = createColorToken(palette);
-  const fonts = frame(process.env["FIGMA_FONT_FRAME"]);
+  const color = createColorToken(colorFrame);
+  const fontFrame = frame(process.env["FIGMA_FONT_FRAME"]);
 
-  if (!fonts) {
+  if (!fontFrame) {
     throw new Error(
       `Invalid frame name: ${process.env["FIGMA_FONT_FRAME"]} is missing as a frame in figma`
     );
   }
 
-  const font = createFontToken(fonts);
+  const font = createFontToken(fontFrame);
+
+  const spacingFrame = frame(process.env["FIGMA_SPACING_FRAME"]);
+  if (!spacingFrame) {
+    throw new Error(
+      `Invalid frame name: ${process.env["FIGMA_SPACING_FRAME"]} is missing as a frame in figma`
+    );
+  }
+
+  const spacing = createSpacingToken(spacingFrame);
+
   const tokens = {
     color,
     font: resolveColorReferences(flatten(color), font),
+    spacing,
   };
 
   const theme = {
     color,
     font,
+    spacing,
   };
 
   const outputFolder = `${process.cwd()}/${process.env["OUTPUT_FOLDER"]}`;
