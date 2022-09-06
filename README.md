@@ -43,7 +43,7 @@ add the generated declaration file for the styled-components theme to the includ
 
 ```
 {
-  "include": ["<foldername>/theme.d.ts", ...],
+  "include": ["theme.d.ts", ...],
 }
 ```
 
