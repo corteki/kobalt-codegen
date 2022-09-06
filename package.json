@@ -6,9 +6,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "start": "ts-node src/main.ts",
-    "generate:types": "ts-node src/generate-types.ts",
-    "generate:tokens": "ts-node src/modules/generate-tokens.ts",
-    "prestart": "generate:types"
+    "generate:types": "ts-node src/generate-types.ts"
   },
   "preferGlobal": true,
   "bin": {

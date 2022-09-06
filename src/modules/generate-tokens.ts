@@ -47,29 +47,32 @@ export const generateTokens = async () => {
   const font = createFontToken(fonts);
   const tokens = { color, font: resolveColorReferences(flatten(color), font) };
 
-  if (!fs.existsSync(process.cwd() + "/__generated__")) {
-    fs.mkdirSync(process.cwd() + "/__generated__");
+  const outputFolder = `${process.cwd()}/${process.env["OUTPUT_FOLDER"]}`;
+  if (!fs.existsSync(outputFolder)) {
+    fs.mkdirSync(outputFolder);
   }
-  fs.writeFileSync(
-    process.cwd() + "/__generated__/tokens.json",
-    JSON.stringify(tokens, null, 2)
-  );
+  const tokenFile = `${outputFolder}/tokens.json`;
+  fs.writeFileSync(tokenFile, JSON.stringify(tokens, null, 2));
 
-  fs.writeFileSync("./__generated__/theme.d.ts", createThemeDeclaration());
+  const themeFile = `${outputFolder}/theme.d.ts`;
+  fs.writeFileSync(themeFile, createThemeDeclaration());
+
+  const outputFile = `${process.env["OUTPUT_FILE"]}.tsx`;
+  const buildPath = `${outputFolder}/`;
 
   tokenGenerator
     .extend({
       format: {
         "typescript/styled-components": createStyledComponentsFormat,
       },
-      source: [process.cwd() + "/__generated__/**/*.json"],
+      source: [tokenFile],
       platforms: {
         web: {
           transformGroup: "web",
-          buildPath: process.env["OUTPUT_FOLDER"],
+          buildPath,
           files: [
             {
-              destination: process.env["OUTPUT_FILE"] + ".tsx",
+              destination: outputFile,
               format: "typescript/styled-components",
               options: {
                 outputReferences: true,

@@ -55,7 +55,7 @@ export interface PurpleChild {
     absoluteRenderBounds: Absolute;
     background:           Background[];
     backgroundColor:      Color;
-    blendMode:            string;
+    blendMode:            ChildBlendMode;
     children:             FluffyChild[];
     clipsContent:         boolean;
     constraints:          Constraints;
@@ -63,7 +63,7 @@ export interface PurpleChild {
     fills:                Background[];
     id:                   string;
     name:                 string;
-    strokeAlign:          string;
+    strokeAlign:          StrokeAlign;
     strokeWeight:         number;
     strokes:              any[];
     type:                 string;
@@ -77,17 +77,22 @@ export interface Absolute {
 }
 
 export interface Background {
-    blendMode: BlendMode;
+    blendMode: BackgroundBlendMode;
     color:     Color;
-    type:      Type;
+    opacity?:  number;
+    type:      BackgroundType;
 }
 
-export enum BlendMode {
+export enum BackgroundBlendMode {
     Normal = "NORMAL",
 }
 
-export enum Type {
+export enum BackgroundType {
     Solid = "SOLID",
+}
+
+export enum ChildBlendMode {
+    PassThrough = "PASS_THROUGH",
 }
 
 export interface FluffyChild {
@@ -95,7 +100,7 @@ export interface FluffyChild {
     absoluteRenderBounds: Absolute;
     background?:          any[];
     backgroundColor?:     Color;
-    blendMode:            string;
+    blendMode:            ChildBlendMode;
     children?:            TentacledChild[];
     clipsContent?:        boolean;
     constraints:          Constraints;
@@ -104,19 +109,23 @@ export interface FluffyChild {
     id:                   string;
     name:                 string;
     preserveRatio?:       boolean;
-    strokeAlign:          string;
+    strokeAlign:          StrokeAlign;
     strokeWeight:         number;
     strokes:              any[];
     styles?:              Styles;
-    type:                 string;
+    type:                 ChildType;
 }
 
 export interface TentacledChild {
     absoluteBoundingBox:      Absolute;
     absoluteRenderBounds:     Absolute;
-    blendMode:                string;
+    background?:              any[];
+    backgroundColor?:         Color;
+    blendMode:                ChildBlendMode;
     characterStyleOverrides?: any[];
     characters?:              string;
+    children?:                StickyChild[];
+    clipsContent?:            boolean;
     constraints:              Constraints;
     effects:                  any[];
     fills:                    Background[];
@@ -131,8 +140,25 @@ export interface TentacledChild {
     strokes:                  any[];
     style?:                   ChildStyle;
     styleOverrideTable?:      ComponentSets;
-    styles:                   Styles;
+    styles?:                  Styles;
     type:                     string;
+}
+
+export interface StickyChild {
+    absoluteBoundingBox:  Absolute;
+    absoluteRenderBounds: Absolute;
+    blendMode:            ChildBlendMode;
+    constraints:          Constraints;
+    effects:              any[];
+    fills:                Background[];
+    id:                   string;
+    name:                 string;
+    preserveRatio:        boolean;
+    strokeAlign:          StrokeAlign;
+    strokeWeight:         number;
+    strokes:              any[];
+    styles:               Styles;
+    type:                 ChildType;
 }
 
 export interface Constraints {
@@ -148,6 +174,19 @@ export enum Vertical {
     Top = "TOP",
 }
 
+export enum StrokeAlign {
+    Inside = "INSIDE",
+}
+
+export interface Styles {
+    fill: string;
+}
+
+export enum ChildType {
+    Group = "GROUP",
+    Rectangle = "RECTANGLE",
+}
+
 export interface ChildStyle {
     fontFamily:          string;
     fontPostScriptName:  null | string;
@@ -160,10 +199,6 @@ export interface ChildStyle {
     textAlignHorizontal: Horizontal;
     textAlignVertical:   Vertical;
     textAutoResize:      string;
-}
-
-export interface Styles {
-    fill: string;
 }
 
 export interface PrototypeDevice {
@@ -366,7 +401,7 @@ const typeMap: any = {
         { json: "absoluteRenderBounds", js: "absoluteRenderBounds", typ: r("Absolute") },
         { json: "background", js: "background", typ: a(r("Background")) },
         { json: "backgroundColor", js: "backgroundColor", typ: r("Color") },
-        { json: "blendMode", js: "blendMode", typ: "" },
+        { json: "blendMode", js: "blendMode", typ: r("ChildBlendMode") },
         { json: "children", js: "children", typ: a(r("FluffyChild")) },
         { json: "clipsContent", js: "clipsContent", typ: true },
         { json: "constraints", js: "constraints", typ: r("Constraints") },
@@ -374,7 +409,7 @@ const typeMap: any = {
         { json: "fills", js: "fills", typ: a(r("Background")) },
         { json: "id", js: "id", typ: "" },
         { json: "name", js: "name", typ: "" },
-        { json: "strokeAlign", js: "strokeAlign", typ: "" },
+        { json: "strokeAlign", js: "strokeAlign", typ: r("StrokeAlign") },
         { json: "strokeWeight", js: "strokeWeight", typ: 0 },
         { json: "strokes", js: "strokes", typ: a("any") },
         { json: "type", js: "type", typ: "" },
@@ -386,16 +421,17 @@ const typeMap: any = {
         { json: "y", js: "y", typ: 3.14 },
     ], false),
     "Background": o([
-        { json: "blendMode", js: "blendMode", typ: r("BlendMode") },
+        { json: "blendMode", js: "blendMode", typ: r("BackgroundBlendMode") },
         { json: "color", js: "color", typ: r("Color") },
-        { json: "type", js: "type", typ: r("Type") },
+        { json: "opacity", js: "opacity", typ: u(undefined, 3.14) },
+        { json: "type", js: "type", typ: r("BackgroundType") },
     ], false),
     "FluffyChild": o([
         { json: "absoluteBoundingBox", js: "absoluteBoundingBox", typ: r("Absolute") },
         { json: "absoluteRenderBounds", js: "absoluteRenderBounds", typ: r("Absolute") },
         { json: "background", js: "background", typ: u(undefined, a("any")) },
         { json: "backgroundColor", js: "backgroundColor", typ: u(undefined, r("Color")) },
-        { json: "blendMode", js: "blendMode", typ: "" },
+        { json: "blendMode", js: "blendMode", typ: r("ChildBlendMode") },
         { json: "children", js: "children", typ: u(undefined, a(r("TentacledChild"))) },
         { json: "clipsContent", js: "clipsContent", typ: u(undefined, true) },
         { json: "constraints", js: "constraints", typ: r("Constraints") },
@@ -404,18 +440,22 @@ const typeMap: any = {
         { json: "id", js: "id", typ: "" },
         { json: "name", js: "name", typ: "" },
         { json: "preserveRatio", js: "preserveRatio", typ: u(undefined, true) },
-        { json: "strokeAlign", js: "strokeAlign", typ: "" },
+        { json: "strokeAlign", js: "strokeAlign", typ: r("StrokeAlign") },
         { json: "strokeWeight", js: "strokeWeight", typ: 0 },
         { json: "strokes", js: "strokes", typ: a("any") },
         { json: "styles", js: "styles", typ: u(undefined, r("Styles")) },
-        { json: "type", js: "type", typ: "" },
+        { json: "type", js: "type", typ: r("ChildType") },
     ], false),
     "TentacledChild": o([
         { json: "absoluteBoundingBox", js: "absoluteBoundingBox", typ: r("Absolute") },
         { json: "absoluteRenderBounds", js: "absoluteRenderBounds", typ: r("Absolute") },
-        { json: "blendMode", js: "blendMode", typ: "" },
+        { json: "background", js: "background", typ: u(undefined, a("any")) },
+        { json: "backgroundColor", js: "backgroundColor", typ: u(undefined, r("Color")) },
+        { json: "blendMode", js: "blendMode", typ: r("ChildBlendMode") },
         { json: "characterStyleOverrides", js: "characterStyleOverrides", typ: u(undefined, a("any")) },
         { json: "characters", js: "characters", typ: u(undefined, "") },
+        { json: "children", js: "children", typ: u(undefined, a(r("StickyChild"))) },
+        { json: "clipsContent", js: "clipsContent", typ: u(undefined, true) },
         { json: "constraints", js: "constraints", typ: r("Constraints") },
         { json: "effects", js: "effects", typ: a("any") },
         { json: "fills", js: "fills", typ: a(r("Background")) },
@@ -430,12 +470,31 @@ const typeMap: any = {
         { json: "strokes", js: "strokes", typ: a("any") },
         { json: "style", js: "style", typ: u(undefined, r("ChildStyle")) },
         { json: "styleOverrideTable", js: "styleOverrideTable", typ: u(undefined, r("ComponentSets")) },
-        { json: "styles", js: "styles", typ: r("Styles") },
+        { json: "styles", js: "styles", typ: u(undefined, r("Styles")) },
         { json: "type", js: "type", typ: "" },
+    ], false),
+    "StickyChild": o([
+        { json: "absoluteBoundingBox", js: "absoluteBoundingBox", typ: r("Absolute") },
+        { json: "absoluteRenderBounds", js: "absoluteRenderBounds", typ: r("Absolute") },
+        { json: "blendMode", js: "blendMode", typ: r("ChildBlendMode") },
+        { json: "constraints", js: "constraints", typ: r("Constraints") },
+        { json: "effects", js: "effects", typ: a("any") },
+        { json: "fills", js: "fills", typ: a(r("Background")) },
+        { json: "id", js: "id", typ: "" },
+        { json: "name", js: "name", typ: "" },
+        { json: "preserveRatio", js: "preserveRatio", typ: true },
+        { json: "strokeAlign", js: "strokeAlign", typ: r("StrokeAlign") },
+        { json: "strokeWeight", js: "strokeWeight", typ: 0 },
+        { json: "strokes", js: "strokes", typ: a("any") },
+        { json: "styles", js: "styles", typ: r("Styles") },
+        { json: "type", js: "type", typ: r("ChildType") },
     ], false),
     "Constraints": o([
         { json: "horizontal", js: "horizontal", typ: r("Horizontal") },
         { json: "vertical", js: "vertical", typ: r("Vertical") },
+    ], false),
+    "Styles": o([
+        { json: "fill", js: "fill", typ: "" },
     ], false),
     "ChildStyle": o([
         { json: "fontFamily", js: "fontFamily", typ: "" },
@@ -450,9 +509,6 @@ const typeMap: any = {
         { json: "textAlignVertical", js: "textAlignVertical", typ: r("Vertical") },
         { json: "textAutoResize", js: "textAutoResize", typ: "" },
     ], false),
-    "Styles": o([
-        { json: "fill", js: "fill", typ: "" },
-    ], false),
     "PrototypeDevice": o([
         { json: "rotation", js: "rotation", typ: "" },
         { json: "type", js: "type", typ: "" },
@@ -463,16 +519,26 @@ const typeMap: any = {
         { json: "name", js: "name", typ: "" },
         { json: "styleType", js: "styleType", typ: "" },
     ], false),
-    "BlendMode": [
+    "BackgroundBlendMode": [
         "NORMAL",
     ],
-    "Type": [
+    "BackgroundType": [
         "SOLID",
+    ],
+    "ChildBlendMode": [
+        "PASS_THROUGH",
     ],
     "Horizontal": [
         "LEFT",
     ],
     "Vertical": [
         "TOP",
+    ],
+    "StrokeAlign": [
+        "INSIDE",
+    ],
+    "ChildType": [
+        "GROUP",
+        "RECTANGLE",
     ],
 };
