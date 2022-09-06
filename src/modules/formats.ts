@@ -2,22 +2,7 @@ import type { Formatter } from "style-dictionary";
 import type { DesignToken } from "style-dictionary/types/DesignToken";
 import { capitalize } from "../utilities/capitalize";
 import { kebabCase } from "../utilities/format";
-import {
-  createStyledComponentFont,
-  createVariable,
-  createTemplate,
-  Theme,
-} from "./templates";
-
-const theme = new Theme();
-
-const createColorName = (token: DesignToken) => {
-  if (token.attributes) {
-    const { type, item, category } = token.attributes;
-    return `${type}${capitalize(item)}${capitalize(category)}`;
-  }
-  return "";
-};
+import { createStyledComponentFont, createTemplate } from "./templates";
 
 const createFontName = (token: DesignToken) => {
   if (token.attributes) {
@@ -60,36 +45,27 @@ export const createStyledComponentsFormat: Formatter = ({
         throw new Error("No attributes available to read from.");
       }
 
-      switch (token.attributes.category) {
-        case "color": {
-          const name = createColorName(token);
-          theme.add(name);
-          return createVariable(createColorName(token), value);
+      if (token.attributes.category === "font") {
+        if (
+          options.outputReferences &&
+          dictionary.usesReference(token.original.value)
+        ) {
+          const refs = dictionary.getReferences(token.original.value);
+          refs.forEach((ref) => {
+            value = value.replace(
+              `${ref.value}`,
+              () => `\${({theme}) => theme.${ref.path.join(".")}.value\}`
+            );
+          });
         }
-        case "font": {
-          if (options.outputReferences) {
-            if (dictionary.usesReference(token.original.value)) {
-              const refs = dictionary.getReferences(token.original.value);
-              refs.forEach((ref) => {
-                value = value.replace(`${ref.value}`, () => {
-                  const name = createColorName(ref);
-                  return `\${({theme}) => theme.${name}\}`;
-                });
-              });
-            }
-          }
-
-          return createStyledComponentFont(
-            createFontName(token),
-            value.slice(1, -1)
-          );
-        }
-        default: {
-          throw new Error(`Unknown category: ${token.attributes.category}`);
-        }
+        return createStyledComponentFont(
+          createFontName(token),
+          value.slice(1, -1)
+        );
       }
+      return;
     })
     .join(`\n`);
 
-  return createTemplate(body, theme.build());
+  return createTemplate(body);
 };

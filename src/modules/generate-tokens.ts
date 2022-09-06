@@ -10,7 +10,7 @@ import { createColorToken } from "./colors";
 import { createFontToken, resolveColorReferences } from "./fonts";
 import { createStyledComponentsFormat } from "./formats";
 import { flatten } from "../utilities/flatten";
-import { createThemeDeclaration } from "./templates";
+import { createTheme, createThemeDeclaration } from "./templates";
 
 const getStyles = (pages: DocumentChild[]) =>
   pages.find((page) => page.name === process.env["FIGMA_STYLE_PAGE"]);
@@ -54,11 +54,14 @@ export const generateTokens = async () => {
   if (!fs.existsSync(outputFolder)) {
     fs.mkdirSync(outputFolder);
   }
+
   const tokenFile = `${outputFolder}/tokens.json`;
   fs.writeFileSync(tokenFile, JSON.stringify(tokens, null, 2));
 
-  const themeFile = `${outputFolder}/theme.d.ts`;
-  fs.writeFileSync(themeFile, createThemeDeclaration());
+  const themeFile = `${outputFolder}/theme.ts`;
+  fs.writeFileSync(themeFile, createTheme(JSON.stringify(tokens, null, 2)));
+  const themeDeclarationFile = `${outputFolder}/theme.d.ts`;
+  fs.writeFileSync(themeDeclarationFile, createThemeDeclaration());
 
   const outputFile = `${process.env["OUTPUT_FILE"]}.tsx`;
   const buildPath = `${outputFolder}/`;
@@ -89,4 +92,5 @@ export const generateTokens = async () => {
       },
     })
     .buildAllPlatforms();
+  fs.rmSync(tokenFile);
 };
