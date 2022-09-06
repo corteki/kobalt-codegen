@@ -60,7 +60,7 @@ export const generateTokens = async () => {
 
   const themeFile = `${outputFolder}/theme.ts`;
   fs.writeFileSync(themeFile, createTheme(JSON.stringify(tokens, null, 2)));
-  const themeDeclarationFile = `${outputFolder}/theme.d.ts`;
+  const themeDeclarationFile = `${process.cwd()}/theme.d.ts`;
   fs.writeFileSync(themeDeclarationFile, createThemeDeclaration());
 
   const outputFile = `${process.env["OUTPUT_FILE"]}.tsx`;

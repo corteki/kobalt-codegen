@@ -25,7 +25,7 @@ export type Theme = typeof theme;
 `);
 export const createThemeDeclaration = () =>
   indent(`
-import type { Theme } from "./theme";
+import type { Theme } from "./${process.env["OUTPUT_FOLDER"]}/theme";
 import "styled-components";
 
 declare module "styled-components" {
