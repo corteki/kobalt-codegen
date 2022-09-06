@@ -3,7 +3,7 @@ import type { AxiosRequestHeaders } from "axios";
 import "dotenv/config";
 
 const headers: AxiosRequestHeaders = {
-  "X-Figma-Token": process.env["FIGMA_ACCESS_TOKEN"],
+  "X-Figma-Token": process.env["FIGMA_ACCESS_TOKEN"] ?? "",
 };
 
 const instance = axios.create({
