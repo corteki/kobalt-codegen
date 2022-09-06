@@ -3,3 +3,4 @@
 /bin
 /node_modules
 /__generated__
+/src/__generated__/figma.ts
