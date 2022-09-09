@@ -32,6 +32,7 @@ FIGMA_FONT_FRAME=<framename>
 FIGMA_SPACING_FRAME=<framename>
 OUTPUT_FILE=<filename>
 OUTPUT_FOLDER=<foldername>
+INPUT_TYPE=frames | plugin
 ```
 
 generate components

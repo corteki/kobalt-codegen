@@ -22,7 +22,21 @@ try {
     "OUTPUT_FILE",
   ]);
 
-  generateTokens();
+  switch (process.env["INPUT_TYPE"]) {
+    case "frames": {
+      generateTokens();
+      break;
+    }
+    case "plugin": {
+      console.log("in development");
+      break;
+    }
+    default: {
+      throw new Error(
+        `Invalid input type: expected INPUT_TYPE to be "frames" or "plugin" but received ${process.env["INPUT_TYPE"]}`
+      );
+    }
+  }
 } catch (error) {
   console.error((error as Error).message);
 }

@@ -7,4 +7,5 @@ export interface ProjectEnv {
   FIGMA_SPACING_FRAME: string;
   OUTPUT_FOLDER: string;
   OUTPUT_FILE: string;
+  INPUT_TYPE: "frames" | "plugin";
 }
